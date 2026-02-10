@@ -1,249 +1,385 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rey Café con Aroma de Mujer | Intensidad Premium</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #fdfaf7;
-        }
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
-        .bg-espresso { background-color: #2D1B14; }
-        .text-terracota { color: #A45D41; }
-        .bg-terracota { background-color: #A45D41; }
-        .text-oro-rosa { color: #D4A373; }
-        .border-oro-rosa { border-color: #D4A373; }
-        .btn-premium {
-            background: linear-gradient(135deg, #A45D41 0%, #D4A373 100%);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .btn-premium:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(164, 93, 65, 0.3);
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(212, 163, 115, 0.2);
-        }
+import React, { useState, useEffect } from 'react';
+import { 
+  Scissors, 
+  Palette, 
+  Sparkles, 
+  Clock, 
+  Phone, 
+  MapPin, 
+  Instagram, 
+  Facebook, 
+  MessageCircle, 
+  Menu, 
+  X, 
+  ChevronRight,
+  User,
+  Calendar,
+  Star
+} from 'lucide-react';
 
-        /* Estilos para el botón flotante de WhatsApp */
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 30px;
-            right: 30px;
-            background-color: #25d366;
-            color: #FFF;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
+const App = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            background-color: #128c7e;
-        }
+  // WhatsApp Config
+  const phoneNumber = "593999195088";
+  const waMessage = encodeURIComponent("Hola, vengo de la página web y quiero agendar una cita.");
+  const waLink = `https://wa.me/${phoneNumber}?text=${waMessage}`;
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-    </style>
-</head>
-<body class="text-espresso">
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    <!-- WhatsApp Floating Button -->
-    <!-- Reemplaza "5491111111111" por el número real de la proveedora con código de país -->
-    <a href="https://wa.me/5491111111111?text=¡Hola!%20☕%20He%20quedado%20cautivada%20por%20la%20propuesta%20de%20Rey%20Café.%20Estoy%20lista%20para%20experimentar%20esa%20intensidad%20y%20aroma%20de%20mujer%20en%20mi%20hogar.%20¿Cómo%20puedo%20hacer%20mi%20pedido%20ahora%20mismo?" 
-       class="whatsapp-float" 
-       target="_blank" 
-       title="Hacer pedido por WhatsApp">
-        <svg viewBox="0 0 32 32" class="w-8 h-8 fill-current">
-            <path d="M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.63.63 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.447-.545-.516-1.146-1.29-1.46-1.963a.426.426 0 0 1-.073-.215c0-.33.99-.945.99-1.49 0-.23-.137-.57-.35-.85-.174-.23-.722-1.21-.922-1.52-.2-.314-.4-.314-.647-.314-.23 0-.46 0-.69.023-.174.02-.375.105-.572.314-.492.522-1.185 1.185-1.185 2.126 0 .943.438 1.84 1.15 2.51 1.05 1.05 2.455 2.155 4.39 2.155.602 0 1.25-.13 1.848-.392.6-.26 1.09-.713 1.25-1.25.13-.438.16-.88.16-1.32a.566.566 0 0 0-.215-.43c-.116-.104-.216-.16-.314-.16z"></path>
-            <path d="M16 1.397c-8.056 0-14.603 6.547-14.603 14.603 0 2.57.668 5.084 1.942 7.31L1.4 30.597l7.5-.1.018.01c2.148 1.2 4.6 1.833 7.085 1.833 8.056 0 14.603-6.547 14.603-14.603C30.603 7.944 24.056 1.397 16 1.397zm0 26.51c-2.316 0-4.577-.61-6.57-1.76l-.47-.272-4.467.592.603-4.35-.298-.475c-1.26-2.007-1.926-4.337-1.926-6.737 0-7.013 5.707-12.72 12.72-12.72s12.72 5.707 12.72 12.72-5.707 12.72-12.72 12.72z"></path>
-        </svg>
-    </a>
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
 
-    <!-- Header -->
-    <header class="fixed w-full z-50 bg-espresso/90 text-white py-4 px-6 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-xl font-bold tracking-widest uppercase">
-                Rey <span class="text-oro-rosa">Café</span>
+  return (
+    <div className="min-h-screen bg-[#FCFAFA] font-sans text-slate-800 antialiased">
+      
+      {/* --- HEADER --- */}
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'
+        }`}
+      >
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center">
+              <Sparkles className="text-white" size={20} />
             </div>
-            <nav class="hidden md:flex space-x-8 text-sm uppercase tracking-wider">
-                <a href="#historia" class="hover:text-oro-rosa transition">Historia</a>
-                <a href="#beneficios" class="hover:text-oro-rosa transition">Beneficios</a>
-                <a href="#testimonios" class="hover:text-oro-rosa transition">Experiencias</a>
-            </nav>
-            <a href="https://wa.me/5491111111111?text=¡Hola!%20☕%20He%20quedado%20cautivada%20por%20la%20propuesta%20de%20Rey%20Café.%20Estoy%20lista%20para%20experimentar%20esa%20intensidad%20y%20aroma%20de%20mujer%20en%20mi%20hogar.%20¿Cómo%20puedo%20hacer%20mi%20pedido%20ahora%20mismo?" 
-               class="bg-terracota px-5 py-2 rounded-full text-xs font-bold tracking-tighter hover:bg-oro-rosa transition">
-                CONTACTO
-            </a>
+            <span className="text-xl font-serif font-bold tracking-tight">ESTILO & ALMA</span>
+          </div>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <button onClick={() => scrollToSection('servicios')} className="hover:text-[#B76E79] transition-colors font-medium">Servicios</button>
+            <button onClick={() => scrollToSection('experiencia')} className="hover:text-[#B76E79] transition-colors font-medium">Experiencia</button>
+            <button onClick={() => scrollToSection('reserva')} className="bg-[#B76E79] text-white px-6 py-2 rounded-full hover:bg-[#a05d68] transition-all shadow-lg shadow-pink-100 font-medium">Reservar Turno</button>
+          </nav>
+
+          {/* Mobile Toggle */}
+          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=1920" 
-                 alt="Mujer empoderada disfrutando café" 
-                 class="w-full h-full object-cover brightness-[0.4]">
-        </div>
-        <div class="relative z-10 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            <div class="text-white space-y-6">
-                <span class="inline-block px-4 py-1 border border-oro-rosa text-oro-rosa text-xs tracking-[0.3em] uppercase">
-                    Aroma de Mujer
-                </span>
-                <h1 class="text-5xl md:text-7xl leading-tight">
-                    Rey Café: El poder de la <span class="text-oro-rosa italic">concentración</span> en cada gota.
-                </h1>
-                <p class="text-lg text-crema/80 font-light max-w-md">
-                    La intensidad que te define, el aroma que te envuelve. Un tributo a la fuerza femenina en forma de café espresso premium.
-                </p>
-                <div class="pt-4">
-                    <a href="https://wa.me/5491111111111?text=¡Hola!%20☕%20He%20quedado%20cautivada%20por%20la%20propuesta%20de%20Rey%20Café.%20Estoy%20lista%20para%20experimentar%20esa%20intensidad%20y%20aroma%20de%20mujer%20en%20mi%20hogar.%20¿Cómo%20puedo%20hacer%20mi%20pedido%20ahora%20mismo?" 
-                       class="btn-premium inline-block px-8 py-4 rounded-lg text-white font-bold text-lg">
-                        ¡Quiero mi dosis de intensidad!
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="absolute top-full left-0 right-0 bg-white shadow-xl py-6 px-6 flex flex-col space-y-4 md:hidden animate-in fade-in slide-in-from-top-4">
+            <button onClick={() => scrollToSection('servicios')} className="text-lg py-2 border-b border-gray-100">Servicios</button>
+            <button onClick={() => scrollToSection('experiencia')} className="text-lg py-2 border-b border-gray-100">Experiencia</button>
+            <button onClick={() => scrollToSection('reserva')} className="bg-[#B76E79] text-white py-3 rounded-xl text-center font-bold">Reservar Turno</button>
+          </div>
+        )}
+      </header>
 
-    <!-- Historia Section -->
-    <section id="historia" class="py-24 px-6 bg-[#f4ece4]">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-            <div class="relative">
-                <div class="absolute -top-4 -left-4 w-64 h-64 bg-terracota/10 rounded-full blur-3xl"></div>
-                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800" 
-                     alt="Café artesanal vertido" 
-                     class="relative z-10 rounded-2xl shadow-2xl grayscale-[20%]">
-            </div>
-            <div class="space-y-6">
-                <h2 class="text-4xl text-espresso italic">Alma femenina, fuerza pura.</h2>
-                <p class="text-lg leading-relaxed text-gray-700">
-                    Rey Café nació de la visión de mujeres que entienden que el café no es solo una bebida, es un ritual de empoderamiento. Nuestro grano es seleccionado artesanalmente en las laderas más fértiles, buscando esa concentración oscura y densa que caracteriza a quienes no se detienen.
-                </p>
-                <p class="text-lg leading-relaxed text-gray-700">
-                    Cada taza lleva el sello de una historia de tenacidad, elegancia y pasión por lo bien hecho.
-                </p>
-                <div class="flex items-center space-x-4 pt-4">
-                    <div class="h-px w-12 bg-terracota"></div>
-                    <span class="font-serif italic text-terracota text-xl">Desde el corazón de la mujer caficultora</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Beneficios -->
-    <section id="beneficios" class="py-24 px-6 bg-espresso text-white overflow-hidden relative">
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-16 space-y-4">
-                <h2 class="text-4xl md:text-5xl">¿Por qué elegir nuestra intensidad?</h2>
-                <p class="text-oro-rosa tracking-widest uppercase text-sm">El estándar premium para paladares exigentes</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="p-8 border border-white/10 rounded-2xl hover:border-oro-rosa/50 transition bg-white/5">
-                    <div class="text-oro-rosa text-4xl mb-4">☕</div>
-                    <h3 class="text-2xl mb-4">Concentración Real</h3>
-                    <p class="text-gray-400 font-light">Un cuerpo denso y oscuro diseñado para quienes aman el sabor puro y potente del espresso.</p>
-                </div>
-                <div class="p-8 border border-white/10 rounded-2xl hover:border-oro-rosa/50 transition bg-white/5">
-                    <div class="text-oro-rosa text-4xl mb-4">⚡</div>
-                    <h3 class="text-2xl mb-4">Energía Duradera</h3>
-                    <p class="text-gray-400 font-light">Cafeína de alta calidad procesada artesanalmente para un despertar prolongado y enfoque total.</p>
-                </div>
-                <div class="p-8 border border-white/10 rounded-2xl hover:border-oro-rosa/50 transition bg-white/5">
-                    <div class="text-oro-rosa text-4xl mb-4">🌿</div>
-                    <h3 class="text-2xl mb-4">Proceso Artesanal</h3>
-                    <p class="text-gray-400 font-light">Tueste lento controlado por expertas para resaltar notas de chocolate amargo y tierra.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Prueba Social -->
-    <section id="testimonios" class="py-24 px-6">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-4xl text-center mb-16 italic">Voces de intensidad</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="glass-card p-8 rounded-xl shadow-sm italic">
-                    <p class="mb-6 text-gray-700">"Nunca había probado un café tan denso y con tanto carácter. Se nota el toque femenino en la elegancia del empaque y la fuerza del sabor."</p>
-                    <div class="flex items-center space-x-4">
-                        <div class="w-10 h-10 bg-terracota rounded-full flex items-center justify-center text-white font-bold">M</div>
-                        <div>
-                            <p class="font-bold not-italic">Mariana S.</p>
-                            <p class="text-xs text-oro-rosa uppercase font-bold tracking-tighter">Empresaria</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card p-8 rounded-xl shadow-sm italic border-oro-rosa">
-                    <p class="mb-6 text-gray-700">"El aroma inunda toda mi oficina cada mañana. Es mi dosis diaria de empoderamiento para empezar el día con todo."</p>
-                    <div class="flex items-center space-x-4">
-                        <div class="w-10 h-10 bg-espresso rounded-full flex items-center justify-center text-white font-bold">V</div>
-                        <div>
-                            <p class="font-bold not-italic">Valeria R.</p>
-                            <p class="text-xs text-oro-rosa uppercase font-bold tracking-tighter">Sommelier</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card p-8 rounded-xl shadow-sm italic">
-                    <p class="mb-6 text-gray-700">"Soy amante del café intenso y Rey Café ha superado mis expectativas. Es artesanal, fuerte y con una historia que vale la pena apoyar."</p>
-                    <div class="flex items-center space-x-4">
-                        <div class="w-10 h-10 bg-terracota rounded-full flex items-center justify-center text-white font-bold">R</div>
-                        <div>
-                            <p class="font-bold not-italic">Ricardo M.</p>
-                            <p class="text-xs text-oro-rosa uppercase font-bold tracking-tighter">Diseñador</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer / CTA Final -->
-    <footer class="bg-[#2D1B14] text-white py-20 px-6">
-        <div class="max-w-3xl mx-auto text-center space-y-8">
-            <h2 class="text-4xl md:text-5xl italic">¿Lista para el siguiente nivel de café?</h2>
-            <p class="text-crema/70 text-lg">Haz tu pedido directamente con nosotros y siente el Aroma de Mujer en cada sorbo.</p>
-            <div class="pt-6">
-                <a href="https://wa.me/5491111111111?text=¡Hola!%20☕%20He%20quedado%20cautivada%20por%20la%20propuesta%20de%20Rey%20Café.%20Estoy%20lista%20para%20experimentar%20esa%20intensidad%20y%20aroma%20de%20mujer%20en%20mi%20hogar.%20¿Cómo%20puedo%20hacer%20mi%20pedido%20ahora%20mismo?" 
-                   class="btn-premium inline-flex items-center space-x-3 px-10 py-5 rounded-full text-white font-bold text-xl uppercase tracking-widest">
-                   <span>Hablar por WhatsApp</span>
+      {/* --- HERO SECTION --- */}
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-[#F5E6E8] -z-10 rounded-l-[100px] hidden lg:block opacity-50"></div>
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="lg:w-1/2 space-y-8 animate-in slide-in-from-left-8 duration-700">
+              <span className="inline-block px-4 py-1 bg-[#F5E6E8] text-[#B76E79] rounded-full text-sm font-bold tracking-widest uppercase">Especialista en Belleza Integral</span>
+              <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight text-[#2C2C2C]">
+                Refleja tu esencia. <br />
+                <span className="text-[#B76E79]">Transforma</span> tu estilo.
+              </h1>
+              <p className="text-lg text-slate-600 max-w-lg leading-relaxed">
+                Expertos en resaltar tu belleza natural con técnicas de vanguardia y un trato delicado que te hará sentir única.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <button 
+                  onClick={() => scrollToSection('reserva')}
+                  className="bg-[#2C2C2C] text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-black transition-all flex items-center justify-center gap-2 group shadow-xl"
+                >
+                  Agendar Cita <ChevronRight className="group-hover:translate-x-1 transition-transform" />
+                </button>
+                <a 
+                  href={waLink}
+                  className="border-2 border-[#B76E79] text-[#B76E79] px-8 py-4 rounded-full text-lg font-bold hover:bg-[#B76E79] hover:text-white transition-all text-center"
+                >
+                  Consultar por WhatsApp
                 </a>
+              </div>
             </div>
-            <div class="pt-12 border-t border-white/10 mt-12 text-sm text-gray-500">
-                <p>&copy; 2024 Rey Café con Aroma de Mujer. Todos los derechos reservados.</p>
+            
+            <div className="lg:w-1/2 relative animate-in zoom-in duration-1000">
+              <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+                <img 
+                  src="https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&q=80&w=800" 
+                  alt="Servicio de estilismo" 
+                  className="w-full h-[500px] object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl z-20 flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white overflow-hidden">
+                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="client" />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="flex text-yellow-400">
+                    <Star size={14} fill="currentColor" />
+                    <Star size={14} fill="currentColor" />
+                    <Star size={14} fill="currentColor" />
+                    <Star size={14} fill="currentColor" />
+                    <Star size={14} fill="currentColor" />
+                  </div>
+                  <p className="text-xs font-bold text-slate-500">500+ Clientes Felices</p>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </footer>
+      </section>
 
-    <script>
-        // Smooth scrolling for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+      {/* --- SERVICIOS --- */}
+      <section id="servicios" className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-4xl font-serif font-bold mb-4">Nuestros Servicios</h2>
+            <div className="h-1 w-20 bg-[#B76E79] mx-auto mb-6"></div>
+            <p className="text-slate-600">Ofrecemos una experiencia completa de cuidado y relajación para que salgas renovada de pies a cabeza.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Capilar */}
+            <div className="group bg-[#FCFAFA] p-10 rounded-3xl hover:bg-[#F5E6E8] transition-all duration-500 border border-slate-50">
+              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                <Scissors className="text-[#B76E79]" size={32} />
+              </div>
+              <h3 className="text-2xl font-serif font-bold mb-4">Estilismo Capilar</h3>
+              <p className="text-slate-600 leading-relaxed mb-6">Cortes de tendencia, peinados sofisticados para eventos y tratamientos nutritivos para un cabello saludable.</p>
+              <ul className="space-y-2 text-sm font-medium text-slate-500">
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Corte Profesional</li>
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Peinado de Gala</li>
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Hidratación Profunda</li>
+              </ul>
+            </div>
+
+            {/* Color */}
+            <div className="group bg-[#FCFAFA] p-10 rounded-3xl hover:bg-[#F5E6E8] transition-all duration-500 border border-slate-50">
+              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                <Palette className="text-[#B76E79]" size={32} />
+              </div>
+              <h3 className="text-2xl font-serif font-bold mb-4">Colorimetría</h3>
+              <p className="text-slate-600 leading-relaxed mb-6">Técnicas avanzadas de color, balayage, iluminaciones y tintes de alta cobertura con productos premium.</p>
+              <ul className="space-y-2 text-sm font-medium text-slate-500">
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Balayage & Ombré</li>
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Tintes Orgánicos</li>
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Baño de Color</li>
+              </ul>
+            </div>
+
+            {/* Nails */}
+            <div className="group bg-[#FCFAFA] p-10 rounded-3xl hover:bg-[#F5E6E8] transition-all duration-500 border border-slate-50">
+              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                <Sparkles className="text-[#B76E79]" size={32} />
+              </div>
+              <h3 className="text-2xl font-serif font-bold mb-4">Nails Spa</h3>
+              <p className="text-slate-600 leading-relaxed mb-6">Manicure y pedicure con acabado de lujo, nail art personalizado y spa de hidratación para manos y pies.</p>
+              <ul className="space-y-2 text-sm font-medium text-slate-500">
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Esmaltado Permanente</li>
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Uñas de Polygel</li>
+                <li className="flex items-center gap-2"> <div className="w-1.5 h-1.5 rounded-full bg-[#B76E79]"></div> Pedicura Spa</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- EXPERIENCIA --- */}
+      <section id="experiencia" className="py-24 bg-[#2C2C2C] text-white">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/2">
+              <img 
+                src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=800" 
+                alt="Salón interior" 
+                className="rounded-3xl shadow-2xl"
+              />
+            </div>
+            <div className="lg:w-1/2 space-y-8">
+              <h2 className="text-4xl font-serif font-bold">Una experiencia <span className="text-[#B76E79]">exclusiva</span> pensada en ti</h2>
+              <p className="text-slate-300 text-lg">
+                No somos solo un centro de belleza; somos tu espacio de retiro. Utilizamos productos de las mejores marcas internacionales para garantizar resultados duraderos y la salud de tu piel y cabello.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-6">
+                <div className="flex gap-4">
+                  <div className="text-[#B76E79]"><Clock size={24}/></div>
+                  <div>
+                    <h4 className="font-bold">Atención Puntual</h4>
+                    <p className="text-sm text-slate-400">Respetamos tu tiempo.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="text-[#B76E79]"><User size={24}/></div>
+                  <div>
+                    <h4 className="font-bold">Personalizado</h4>
+                    <p className="text-sm text-slate-400">Diseños a tu medida.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="text-[#B76E79]"><Sparkles size={24}/></div>
+                  <div>
+                    <h4 className="font-bold">Productos VIP</h4>
+                    <p className="text-sm text-slate-400">Calidad garantizada.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="text-[#B76E79]"><Star size={24}/></div>
+                  <div>
+                    <h4 className="font-bold">Especialistas</h4>
+                    <p className="text-sm text-slate-400">Más de 10 años de Exp.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- RESERVA / FORMULARIO --- */}
+      <section id="reserva" className="py-24 bg-[#FCFAFA]">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto bg-white rounded-[40px] shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            <div className="md:w-2/5 bg-[#B76E79] p-12 text-white flex flex-col justify-between">
+              <div>
+                <h2 className="text-3xl font-serif font-bold mb-6">Reserva tu cita</h2>
+                <p className="opacity-90 mb-8 leading-relaxed">
+                  Completa tus datos y nos pondremos en contacto contigo de inmediato para confirmar tu turno.
+                </p>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <Phone className="opacity-70" size={20} />
+                    <span>0999195088</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <MapPin className="opacity-70" size={20} />
+                    <span>Visítanos en nuestro centro físico</span>
+                  </div>
+                </div>
+              </div>
+              <div className="pt-12">
+                <p className="text-sm opacity-60">Horario: Mar - Sáb: 9am - 7pm</p>
+              </div>
+            </div>
+
+            <div className="md:w-3/5 p-12">
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider">Nombre Completo</label>
+                    <input type="text" placeholder="Ej. Maria Garcia" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B76E79] transition-all" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider">Teléfono / WhatsApp</label>
+                    <input type="tel" placeholder="0999999999" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B76E79] transition-all" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-500 uppercase tracking-wider">Servicio Deseado</label>
+                  <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B76E79] transition-all">
+                    <option>Corte y Estilismo</option>
+                    <option>Tinte / Colorimetría</option>
+                    <option>Manicure / Pedicure</option>
+                    <option>Tratamiento Capilar</option>
+                    <option>Maquillaje</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-500 uppercase tracking-wider">Fecha Tentativa</label>
+                  <div className="relative">
+                    <Calendar className="absolute left-4 top-3 text-slate-400" size={20} />
+                    <input type="date" className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B76E79] transition-all" />
+                  </div>
+                </div>
+
+                <button className="w-full bg-[#2C2C2C] text-white py-4 rounded-xl font-bold hover:bg-black transition-all shadow-lg hover:shadow-xl mt-4">
+                  Solicitar Turno Ahora
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FOOTER --- */}
+      <footer className="bg-white pt-20 pb-10 border-t border-slate-100">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
+            <div className="max-w-sm space-y-6">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center">
+                  <Sparkles className="text-white" size={20} />
+                </div>
+                <span className="text-2xl font-serif font-bold tracking-tight">ESTILO & ALMA</span>
+              </div>
+              <p className="text-slate-500 leading-relaxed">
+                Dedicados a transformar no solo tu apariencia, sino tu confianza. Un espacio diseñado para tu bienestar y belleza.
+              </p>
+              <div className="flex space-x-4">
+                <a href="#" className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-600 hover:bg-[#B76E79] hover:text-white transition-all shadow-sm">
+                  <Instagram size={20} />
+                </a>
+                <a href="#" className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-600 hover:bg-[#B76E79] hover:text-white transition-all shadow-sm">
+                  <Facebook size={20} />
+                </a>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-12 md:gap-24">
+              <div>
+                <h4 className="font-bold mb-6 uppercase tracking-widest text-sm">Navegación</h4>
+                <ul className="space-y-4 text-slate-500">
+                  <li><button onClick={() => scrollToSection('servicios')} className="hover:text-[#B76E79]">Servicios</button></li>
+                  <li><button onClick={() => scrollToSection('experiencia')} className="hover:text-[#B76E79]">Experiencia</button></li>
+                  <li><button onClick={() => scrollToSection('reserva')} className="hover:text-[#B76E79]">Reserva</button></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold mb-6 uppercase tracking-widest text-sm">Contacto</h4>
+                <ul className="space-y-4 text-slate-500">
+                  <li className="flex items-center gap-2 italic">0999195088</li>
+                  <li>Ubicación: Enlace Maps</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div className="pt-8 border-t border-slate-100 text-center text-slate-400 text-sm">
+            <p>© 2026 Centro Estilista Profesional. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* --- WHATSAPP FLOATING BUTTON --- */}
+      <a 
+        href={waLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-[9999] bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all animate-bounce"
+        aria-label="Contactar por WhatsApp"
+      >
+        <MessageCircle size={32} fill="white" className="text-[#25D366]" />
+      </a>
+
+    </div>
+  );
+};
+
+export default App;
